@@ -6,6 +6,18 @@ import {simplifyAmount, simplifyYears} from '../../utils/helper';
 import {memo, useEffect, useState} from 'react';
 import {Slider} from '@miblanchard/react-native-slider';
 
+/**
+ * Custom Slider component.
+ * Renders a customized slider component.
+ *
+ * @param {Object} props - Component props.
+ * @param {number} [props.amount] - Current value of the slider.
+ * @param {Function} props.setAmount - Function to set the slider value.
+ * @param {string} props.type - Type of the slider ('amount' or 'years').
+ * @param {boolean} props.disabled - Indicates if the slider is disabled.
+ * @returns {JSX.Element} - Customized Slider component.
+ */
+
 interface Props extends React.HTMLAttributes<any> {
   amount?: number;
   setAmount: (value: number) => void;
@@ -18,6 +30,7 @@ const CustomSlider = ({amount, type, setAmount, disabled}: Props) => {
   const [trackRange, setTrackRange] = useState<number[]>([]);
 
   useEffect(() => {
+    // Calcuate the tracks
     const temp: number[] = [];
     const step = (range.end - range.start) / 5;
     for (let i = range.start + step; i < range.end; i += step) temp.push(i);

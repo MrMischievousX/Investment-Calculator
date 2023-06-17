@@ -11,6 +11,12 @@ const guidelineBaseWidth = 380;
 const guidelineBaseHeight = 680;
 export const guidelineBaseWidthAndroid = width <= 375 ? 400 : 380;
 
+/**
+ * scale
+ * Convert size to device specific size
+ *
+ * @param  {number} size Enter size
+ */
 const scale = (size: number) => {
   let dim;
   if (Platform.OS === 'android') {

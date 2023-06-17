@@ -4,6 +4,14 @@ import {height, width} from '../../constants/dimen';
 import {COLORS} from '../../constants/colors';
 import {NordLogo} from '../../assets/svgs';
 
+/**
+ * Loader component.
+ * Renders a loading screen with a logo.
+ *
+ * @param {Object} props - Component props.
+ * @returns {JSX.Element} - Loader component.
+ */
+
 type Props = {};
 
 const Loader = (props: Props) => {

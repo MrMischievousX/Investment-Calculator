@@ -5,8 +5,6 @@
   <h1 align="center">Nord Finance</h1>  
 </p>
 
----
-
 ## Introduction
 
 Discover the ability to calculate your crypto SIP (Systematic Investment Plan) investment on a weekly, monthly, and yearly basis with Nord Finance.
@@ -32,6 +30,9 @@ You can download the latest APK [here](https://drive.google.com/file/d/1Fe860oeJ
 <img width="250px" margin="30px" style="margin:20px;" src="./readme-asset/years.png">
 <img width="250px" margin="30px" style="margin:20px;" src="./readme-asset/home.png">
 </div>
+
+<br>
+<br>
 
 ## :sparkles: Unit testing
 

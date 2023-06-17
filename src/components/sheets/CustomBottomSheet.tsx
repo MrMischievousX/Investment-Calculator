@@ -10,6 +10,20 @@ import {FONTS} from '../../constants/fonts';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {timeLineArr} from '../../constants/helper';
 
+/**
+ * Custom Bottom Sheet component.
+ * Renders a customizable bottom sheet with different content based on the sheet state.
+ *
+ * @param {Object} props - Component props.
+ * @param {any} props.data - Data for rendering the bottom sheet.
+ * @param {string} props.sheetState - Current state of the bottom sheet.
+ * @param {Function} props.setPoolIndex - Function to set the pool index.
+ * @param {Function} props.setTimeline - Function to set the timeline.
+ * @param {React.RefObject} props.bottomSheetRef - Reference to the bottom sheet.
+ * @param {number} props.timeline - Current timeline value.
+ * @returns {JSX.Element} - Custom Bottom Sheet component.
+ */
+
 interface Props {
   data: any;
   sheetState: string;

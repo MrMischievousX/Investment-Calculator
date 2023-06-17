@@ -11,6 +11,22 @@ import {COLORS} from '../../constants/colors';
 import {FONTS} from '../../constants/fonts';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
+/**
+ * Submit button component.
+ * Renders a button with provided title, handles loading state, and calls the given function on button press.
+ *
+ * @param {Object} props - Component props.
+ * @param {string} props.title - Button title.
+ * @param {Function} props.fetchInvestmentCalculator - Function to be called on button press.
+ * @param {boolean} props.loading - Indicates if API call is in progress.
+ * @param {Object} props.inset - Safe area insets.
+ * @param {number} props.inset.top - Top inset.
+ * @param {number} props.inset.right - Right inset.
+ * @param {number} props.inset.bottom - Bottom inset.
+ * @param {number} props.inset.left - Left inset.
+ * @returns {JSX.Element} - Submit button component.
+ */
+
 type Props = {
   title: string;
   fetchInvestmentCalculator: Function;
@@ -73,4 +89,5 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
+
 export default memo(SubmitBtn);

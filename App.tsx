@@ -27,7 +27,7 @@ import {
 } from './src/utils/api';
 import CustomBottomSheet from './src/components/sheets/CustomBottomSheet';
 import BottomSheet from '@gorhom/bottom-sheet';
-import {memoPoolData, timeLineArr} from './src/constants/helper';
+import {timeLineArr} from './src/constants/helper';
 import {investmentCountCalculator} from './src/utils/helper';
 import {LOCALES} from './src/constants/locales';
 import Loader from './src/components/views/Loader';
@@ -156,12 +156,7 @@ function Main(): JSX.Element {
               </View>
               <View style={{marginLeft: scale(12)}} />
               <View style={styles.investBox}>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    justifyContent: 'space-evenly',
-                    alignItems: 'center',
-                  }}>
+                <View style={styles.usdView}>
                   <Text style={{...FONTS.secondaryText}}>USDT</Text>
                   <ArrowDown
                     width={scale(8)}
@@ -364,6 +359,11 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
     paddingBottom: scale(156),
+  },
+  usdView: {
+    flexDirection: 'row',
+    justifyContent: 'space-evenly',
+    alignItems: 'center',
   },
   investBox: {
     paddingHorizontal: scale(16),
