@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, {useCallback, useEffect, useMemo, useRef} from 'react';
 import {
   Image,
   Keyboard,
@@ -8,10 +8,12 @@ import {
   Text,
   TextInput,
   View,
+} from 'react-native';
+import {
+  GestureHandlerRootView,
   ScrollView,
   TouchableOpacity,
-} from 'react-native';
-import {GestureHandlerRootView} from 'react-native-gesture-handler';
+} from 'react-native-gesture-handler';
 import {width, height, scale} from './src/constants/dimen';
 import {FONTS} from './src/constants/fonts';
 import {COLORS} from './src/constants/colors';
@@ -30,29 +32,35 @@ import {investmentCountCalculator} from './src/utils/helper';
 import {LOCALES} from './src/constants/locales';
 import Loader from './src/components/views/Loader';
 import {ArrowDown} from './src/assets/svgs';
-import {SafeAreaProvider} from 'react-native-safe-area-context';
+import {
+  SafeAreaProvider,
+  useSafeAreaInsets,
+} from 'react-native-safe-area-context';
 
-function App(): JSX.Element {
-  const [amount, setAmount] = useState<number>(7000);
-  const [years, setYears] = useState<number>(3);
-  const [timeline, setTimeline] = useState<number>(1);
-  const [poolData, setpoolData] = useState<any>(null);
-  const [investmentResult, setInvestmentResult] = useState<any>(null);
-  const [poolIndex, setPoolIndex] = useState(-1);
-  const [sheetState, setSheetState] = useState<string>('');
-  const [loading, setLoading] = useState<boolean>(false);
+function Main(): JSX.Element {
+  const [poolData, setpoolData] = React.useState<any>(null);
+  const [amount, setAmount] = React.useState<number>(7000);
+  const [years, setYears] = React.useState<number>(3);
+  const [timeline, setTimeline] = React.useState<number>(1);
+  const [poolIndex, setPoolIndex] = React.useState(-1);
+  const [investmentResult, setInvestmentResult] = React.useState<any>(null);
+  const [sheetState, setSheetState] = React.useState<string>('');
+  const [loading, setLoading] = React.useState<boolean>(false);
 
   const bottomSheetRef = useRef<BottomSheet>(null);
+  const inset = useSafeAreaInsets();
+  const memoInset = useMemo(() => inset, []);
 
   const getPools = async () => {
     const poolDataRes = await fetchPools();
+    if (!poolDataRes || poolDataRes.length <= 0) return;
     const calculatorQuery = await poolDataRes?.pools?.map(async (pool: any) => {
       return fetchPoolCalculator(pool?.id);
     });
     const calculatorData = await Promise.all(calculatorQuery);
     const newPoolData = poolDataRes?.pools?.map((pool: any, index: number) => {
       return {
-        id: pool.id,
+        id: pool?.id,
         poolName: pool?.poolName,
         poolImage: pool?.poolImage,
         yearlyOptions: calculatorData[index]?.data?.yearlyOptions,
@@ -91,8 +99,8 @@ function App(): JSX.Element {
   }, [poolIndex, poolData, timeline, amount, years]);
 
   useEffect(() => {
-    // getPools();
-    setpoolData(memoPoolData);
+    getPools();
+    // setpoolData(memoPoolData);
   }, []);
 
   //MEMOIZED FUNCTION FOR SETAMOUNT
@@ -120,7 +128,7 @@ function App(): JSX.Element {
   return (
     <>
       <StatusBar barStyle={'dark-content'} backgroundColor={COLORS.primaryBg} />
-      <SafeAreaView style={styles.main}>
+      <SafeAreaView testID="mainView" style={styles.main}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           contentContainerStyle={styles.center}
@@ -133,6 +141,7 @@ function App(): JSX.Element {
             <View style={styles.investSubContainer}>
               <View style={styles.investBox}>
                 <TextInput
+                  testID="amountInput"
                   style={styles.textInput}
                   maxLength={8}
                   allowFontScaling={false}
@@ -196,7 +205,9 @@ function App(): JSX.Element {
                     />
                   )}
                   {poolIndex != -1 && (
-                    <Text style={{...FONTS.secondaryText, width: '76%'}}>
+                    <Text
+                      testID="investedIn"
+                      style={{...FONTS.secondaryText, width: '76%'}}>
                       {poolData && poolData[poolIndex]?.poolName}
                     </Text>
                   )}
@@ -250,7 +261,9 @@ function App(): JSX.Element {
                 )}
             </View>
             <View style={{...styles.investBox}}>
-              <Text style={{...FONTS.secondaryText}}>{years} yrs</Text>
+              <Text testID="mainYears" style={{...FONTS.secondaryText}}>
+                {years} yrs
+              </Text>
             </View>
           </View>
 
@@ -263,11 +276,12 @@ function App(): JSX.Element {
 
           <View style={styles.container}>
             <LabelText title={LOCALES.investedMoney} />
-            <Text style={{...FONTS.subHeadingText, width: '48%'}}>
+            <Text
+              testID="investmentValue"
+              style={{...FONTS.subHeadingText, width: '48%'}}>
               {investmentResult
-                ? investmentResult?.resultData?.investedAmount
-                : 0}{' '}
-              USDT
+                ? `${investmentResult?.resultData?.investedAmount} USDT`
+                : '0 USDT'}
             </Text>
           </View>
 
@@ -277,18 +291,19 @@ function App(): JSX.Element {
               style={{
                 width: '49%',
               }}>
-              <Text style={{...FONTS.headingText}}>
+              <Text style={{...FONTS.headingText}} testID="investmentWorth">
                 {investmentResult
-                  ? ~~investmentResult?.resultData?.worthNowInUSD
-                  : 0}{' '}
-                USDT
+                  ? `${~~(
+                      investmentResult?.resultData?.worthNowInUSD /
+                      (10 ^ 18)
+                    )} USDT`
+                  : '0 USDT'}
               </Text>
               <View style={styles.returnBox}>
-                <Text style={{...FONTS.tertiaryText}}>
+                <Text style={{...FONTS.tertiaryText}} testID="investmentChange">
                   {investmentResult
-                    ? ~~investmentResult?.absoluteReturns
-                    : '0.0'}{' '}
-                  %
+                    ? `${~~investmentResult?.absoluteReturns} %`
+                    : '0.0 %'}
                 </Text>
               </View>
             </View>
@@ -297,6 +312,7 @@ function App(): JSX.Element {
         <SubmitBtn
           title={LOCALES.calculate}
           loading={loading}
+          inset={memoInset}
           fetchInvestmentCalculator={fetchInvestmentCalculator}
         />
       </SafeAreaView>
@@ -384,14 +400,16 @@ const styles = StyleSheet.create({
   },
 });
 
-const MainApp = () => {
+const App = () => {
   return (
     <SafeAreaProvider>
-      <GestureHandlerRootView>
-        <App />
+      <GestureHandlerRootView style={{flex: 1}}>
+        <Main />
       </GestureHandlerRootView>
     </SafeAreaProvider>
   );
 };
 
-export default MainApp;
+export {Main};
+
+export default App;

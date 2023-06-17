@@ -1,22 +1,14 @@
 import {timeLineArr} from '../constants/helper';
 
 export function simplifyAmount(number: number) {
-  const suffixes = ['', 'k', 'm', 'b', 't'];
-  const suffixNum = Math.floor(('' + number).length / 3);
-  let shortValue: string | number = parseFloat(
-    (suffixNum !== 0 ? number / Math.pow(1000, suffixNum) : number).toPrecision(
-      2,
-    ),
-  );
-  if (shortValue % 1 !== 0) {
-    shortValue = shortValue.toFixed(1);
-  }
-  return shortValue + suffixes[suffixNum];
+  if (number < 1e3) return number + '';
+  if (number >= 1e3 && number < 1e6) return +(number / 1e3).toFixed(1) + 'K';
+  if (number >= 1e6 && number < 1e9) return +(number / 1e6).toFixed(1) + 'M';
+  if (number >= 1e9 && number < 1e12) return +(number / 1e9).toFixed(1) + 'B';
+  if (number >= 1e12) return +(number / 1e12).toFixed(1) + 'T';
 }
 
 export function simplifyYears(number: number) {
-  // if (number == 1) return 'Present';
-  // else
   return `${Math.round(number)} yrs`;
 }
 

@@ -1,4 +1,4 @@
-export const baseUrl = 'https://api.nordl.io/api';
+export const baseUrl = 'https://dev-testnet.nordl.io/api';
 
 export const fetchPools = async () => {
   try {

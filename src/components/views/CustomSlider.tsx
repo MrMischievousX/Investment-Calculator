@@ -2,9 +2,9 @@ import {StyleSheet, Text, View} from 'react-native';
 import {isSmallDevice, scale} from '../../constants/dimen';
 import {FONTS} from '../../constants/fonts';
 import {COLORS} from '../../constants/colors';
-import {Slider} from '@miblanchard/react-native-slider';
 import {simplifyAmount, simplifyYears} from '../../utils/helper';
 import {memo, useEffect, useState} from 'react';
+import {Slider} from '@miblanchard/react-native-slider';
 
 interface Props extends React.HTMLAttributes<any> {
   amount?: number;
@@ -26,13 +26,7 @@ const CustomSlider = ({amount, type, setAmount, disabled}: Props) => {
   }, []);
 
   return (
-    <View
-      style={{
-        width: '100%',
-        marginVertical: scale(16),
-        alignItems: 'center',
-        justifyContent: 'center',
-      }}>
+    <View style={styles.main}>
       <Slider
         disabled={disabled}
         value={amount}
@@ -64,15 +58,7 @@ const CustomSlider = ({amount, type, setAmount, disabled}: Props) => {
           );
         }}
       />
-      <View
-        style={{
-          flexDirection: 'row',
-          justifyContent: 'space-between',
-          alignItems: 'center',
-          width: '100%',
-          position: 'relative',
-          top: -scale(isSmallDevice ? 7 : 4),
-        }}>
+      <View style={styles.textContainer}>
         <Text style={{...FONTS.secondaryText}}>
           {type == 'amount'
             ? simplifyAmount(range.start)
@@ -90,4 +76,19 @@ const CustomSlider = ({amount, type, setAmount, disabled}: Props) => {
 
 export default memo(CustomSlider);
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  main: {
+    width: '100%',
+    marginVertical: scale(16),
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  textContainer: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+    width: '100%',
+    position: 'relative',
+    top: -scale(isSmallDevice ? 7 : 4),
+  },
+});

@@ -6,6 +6,13 @@ export const timeLineArr = [
 
 export const memoPoolData = [
   {
+    id: 11,
+    poolImage:
+      'https://firebasestorage.googleapis.com/v0/b/nordl-images.appspot.com/o/BTCETHRatio.png?alt=media&token=65848fc5-b373-4cc7-a782-66a01ec2bf12',
+    poolName: 'BTC ETH Ratio Fund',
+    yearlyOptions: 6,
+  },
+  {
     id: 9,
     poolImage:
       'https://firebasestorage.googleapis.com/v0/b/nordl-images.appspot.com/o/MetaverseDiverseIndex.png?alt=media&token=a80646c3-913d-43b9-a6b6-235e42c1978e',
@@ -18,13 +25,6 @@ export const memoPoolData = [
       'https://firebasestorage.googleapis.com/v0/b/nordl-images.appspot.com/o/CryptoBluechipIndex.png?alt=media&token=9bcb0b12-6e40-42e9-9428-0eed1c3800ed',
     poolName: 'Crypto Bluechip Index Fund',
     yearlyOptions: 2,
-  },
-  {
-    id: 11,
-    poolImage:
-      'https://firebasestorage.googleapis.com/v0/b/nordl-images.appspot.com/o/BTCETHRatio.png?alt=media&token=65848fc5-b373-4cc7-a782-66a01ec2bf12',
-    poolName: 'BTC ETH Ratio Fund',
-    yearlyOptions: 6,
   },
   {
     id: 8,
@@ -531,3 +531,16 @@ export const memoPoolData = [
     yearlyOptions: 2,
   },
 ];
+
+export const memoInvestmemtResponseData = {
+  absoluteReturns: '17.2706',
+  resultData: {
+    investedAmount: '279792',
+    investedAmountInUSD: '279792',
+    investmentCount: 36,
+    nav: '13.66191055237019499',
+    timeStamp: '2023-06-16T09:14:49.170Z',
+    totalShares: 24016.678309404877,
+    worthNowInUSD: '328113.710828138866372289358773601328',
+  },
+};

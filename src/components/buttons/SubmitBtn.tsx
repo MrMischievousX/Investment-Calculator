@@ -1,40 +1,55 @@
 import {
   ActivityIndicator,
+  Platform,
   StyleSheet,
   Text,
-  TouchableOpacity,
   View,
 } from 'react-native';
 import React, {memo} from 'react';
 import {navbarHeight, scale, width} from '../../constants/dimen';
 import {COLORS} from '../../constants/colors';
 import {FONTS} from '../../constants/fonts';
-import {useSafeAreaInsets} from 'react-native-safe-area-context';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 type Props = {
   title: string;
   fetchInvestmentCalculator: Function;
   loading: boolean;
+  inset: {top: number; right: number; bottom: number; left: number};
 };
 
-const SubmitBtn = ({title, fetchInvestmentCalculator, loading}: Props) => {
-  const inset = useSafeAreaInsets();
+const SubmitBtn = ({
+  title,
+  loading,
+  inset,
+  fetchInvestmentCalculator,
+}: Props) => {
   return (
     <View
+      testID="submitBtnView"
       style={{
         ...styles.container,
         bottom: inset.bottom
           ? inset.bottom + scale(8)
-          : scale(navbarHeight) + scale(32),
+          : Platform.OS == 'ios'
+          ? scale(navbarHeight) + scale(8)
+          : scale(navbarHeight) + scale(36),
       }}>
       <TouchableOpacity
         style={styles.button}
         disabled={loading}
+        testID="submitBtnAction"
         onPress={() => fetchInvestmentCalculator()}>
         {loading ? (
-          <ActivityIndicator color={COLORS.primaryBg} size={'large'} />
+          <ActivityIndicator
+            testID="submitBtnLoader"
+            color={COLORS.primaryBg}
+            size={'large'}
+          />
         ) : (
-          <Text style={{...FONTS.ctaText}}>{title}</Text>
+          <Text testID="submitBtnTitle" style={{...FONTS.ctaText}}>
+            {title}
+          </Text>
         )}
       </TouchableOpacity>
     </View>

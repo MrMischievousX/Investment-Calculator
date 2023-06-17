@@ -1,14 +1,14 @@
-import {View, Text, Image, StyleSheet} from 'react-native';
-import React, {memo, useCallback, useMemo, useRef, useState} from 'react';
+import {View, Text, Image, StyleSheet, FlatList} from 'react-native';
+import React, {memo, useCallback, useMemo} from 'react';
 import BottomSheet, {
   BottomSheetBackdrop,
   BottomSheetFlatList,
 } from '@gorhom/bottom-sheet';
 import {COLORS} from '../../constants/colors';
-import {height, scale, width} from '../../constants/dimen';
+import {navbarHeight, scale, width} from '../../constants/dimen';
 import {FONTS} from '../../constants/fonts';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {memoPoolData, timeLineArr} from '../../constants/helper';
+import {timeLineArr} from '../../constants/helper';
 
 interface Props {
   data: any;
@@ -28,7 +28,8 @@ const CustomBottomSheet = ({
   data,
 }: Props) => {
   const snapPoints = useMemo(
-    () => (sheetState === 'timeline' ? ['20%'] : ['75%']),
+    () =>
+      sheetState === 'timeline' ? [navbarHeight ? '15%' : '15%'] : ['75%'],
     [sheetState],
   );
 
@@ -37,40 +38,26 @@ const CustomBottomSheet = ({
   const pools = data;
 
   const renderItem = useCallback(
-    ({item, index}: {item: any; index: number}) => (
-      <TouchableOpacity
-        onPress={() => {
-          setPoolIndex(index);
-          bottomSheetRef?.current?.close();
-        }}>
-        <View
-          style={{
-            marginVertical: scale(16),
-            justifyContent: 'flex-start',
-            alignItems: 'center',
-            flexDirection: 'row',
+    ({item, index}: {item: any; index: number}) => {
+      return (
+        <TouchableOpacity
+          testID={`amountBottomSheetItem${index}`}
+          onPress={() => {
+            setPoolIndex(index);
+            bottomSheetRef?.current?.close();
           }}>
-          <Image
-            source={{
-              uri: item.poolImage,
-            }}
-            style={{
-              width: scale(48),
-              height: scale(48),
-              borderRadius: scale(8),
-            }}
-          />
-          <Text
-            style={{
-              ...FONTS.sheetText,
-              marginLeft: scale(16),
-              width: width * 0.7,
-            }}>
-            {item.poolName}
-          </Text>
-        </View>
-      </TouchableOpacity>
-    ),
+          <View style={styles.flatitem}>
+            <Image
+              source={{
+                uri: item.poolImage,
+              }}
+              style={styles.flatImg}
+            />
+            <Text style={styles.timelineText}>{item.poolName}</Text>
+          </View>
+        </TouchableOpacity>
+      );
+    },
     [],
   );
 
@@ -85,39 +72,20 @@ const CustomBottomSheet = ({
       )}
       backgroundStyle={{backgroundColor: COLORS.primaryBg}}
       onChange={handleSheetChanges}>
-      <View
-        style={{
-          backgroundColor: COLORS.primaryBg,
-          width: '100%',
-          height: '100%',
-          paddingVertical: scale(16),
-          paddingHorizontal: scale(12),
-          borderRadius: scale(24),
-          justifyContent: 'center',
-          alignItems: 'center',
-        }}>
+      <View style={styles.sheetContainer}>
         {sheetState === 'timeline' ? (
-          <View
-            style={{
-              height: '100%',
-              flexDirection: 'row',
-              justifyContent: 'space-between',
-              width: '96%',
-            }}>
+          <View testID="timelineBottomSheet" style={styles.timelineSheet}>
             {timeLineArr.map((item, index) => {
               return (
                 <TouchableOpacity
                   key={index}
+                  testID={`timelineBottomSheetItem${index}`}
                   style={{
-                    justifyContent: 'center',
-                    alignItems: 'center',
+                    ...styles.timelineItem,
                     backgroundColor:
                       index == timeline
                         ? COLORS.primaryCta
                         : COLORS.secondaryBg,
-                    paddingHorizontal: scale(12),
-                    paddingVertical: scale(8),
-                    borderRadius: scale(8),
                   }}
                   onPress={() => {
                     setTimeline(index);
@@ -138,7 +106,8 @@ const CustomBottomSheet = ({
             })}
           </View>
         ) : (
-          <BottomSheetFlatList
+          <FlatList
+            testID="amountBottomSheet"
             showsVerticalScrollIndicator={false}
             data={pools}
             keyExtractor={(item, index) => index?.toString()}
@@ -152,3 +121,45 @@ const CustomBottomSheet = ({
 };
 
 export default memo(CustomBottomSheet);
+
+const styles = StyleSheet.create({
+  flatitem: {
+    marginVertical: scale(16),
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    flexDirection: 'row',
+  },
+  flatImg: {
+    width: scale(48),
+    height: scale(48),
+    borderRadius: scale(8),
+  },
+  sheetContainer: {
+    backgroundColor: COLORS.primaryBg,
+    width: '100%',
+    height: '100%',
+    paddingVertical: scale(16),
+    paddingHorizontal: scale(12),
+    borderRadius: scale(24),
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
+  timelineItem: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    paddingHorizontal: scale(12),
+    paddingVertical: scale(8),
+    borderRadius: scale(8),
+  },
+  timelineText: {
+    ...FONTS.sheetText,
+    marginLeft: scale(16),
+    width: width * 0.7,
+  },
+  timelineSheet: {
+    height: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    width: '96%',
+  },
+});

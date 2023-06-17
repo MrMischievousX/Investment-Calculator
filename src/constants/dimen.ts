@@ -5,12 +5,11 @@ const windowWidth = Dimensions.get('window').width;
 const windowHeight = Dimensions.get('window').height;
 
 export const isSmallDevice = width <= 375 && height <= 667 ? true : false;
-
-const navbarHeight = height - windowHeight - StatusBar?.currentHeight;
+const navbarHeight = height - windowHeight - StatusBar?.currentHeight ?? 0;
 
 const guidelineBaseWidth = 380;
 const guidelineBaseHeight = 680;
-const guidelineBaseWidthAndroid = width <= 375 ? 400 : 380;
+export const guidelineBaseWidthAndroid = width <= 375 ? 400 : 380;
 
 const scale = (size: number) => {
   let dim;

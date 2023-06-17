@@ -7,7 +7,8 @@
     "ios": "react-native run-ios --simulator='iPhone 13'",
     "lint": "eslint .",
     "start": "react-native start",
-    "test": "jest"
+    "test": "jest",
+    "coverage": "jest  --coverage"
   },
   "dependencies": {
     "@gorhom/bottom-sheet": "^4",
@@ -26,6 +27,7 @@
     "@react-native-community/eslint-config": "^3.2.0",
     "@tsconfig/react-native": "^2.0.2",
     "@types/jest": "^29.2.1",
+    "@types/node": "^20.3.1",
     "@types/react": "^18.0.24",
     "@types/react-test-renderer": "^18.0.0",
     "babel-jest": "^29.2.1",
@@ -38,6 +40,25 @@
     "typescript": "4.8.4"
   },
   "jest": {
-    "preset": "react-native"
+    "fakeTimers": {
+      "enableGlobally": true
+    },
+    "preset": "react-native",
+    "setupFiles": [
+      "<rootDir>/__tests__/config/setup.ts"
+    ],
+    "testPathIgnorePatterns": [
+      "/node_modules/",
+      "<rootDir>/__tests__/__mocks__",
+      "<rootDir>/__tests__/config"
+    ],
+    "moduleDirectories": [
+      "node_modules",
+      "<rootDir>/__tests__/__mocks__"
+    ],
+    "resetMocks": true,
+    "transform": {
+      "\\.(jpg|jpeg|png|gif|eot|otf|webp|svg|ttf|woff|woff2|mp4|webm|wav|mp3|m4a|aac|oga)$": "<rootDir>/__tests__/config/fileTransformer.ts"
+    }
   }
 }
